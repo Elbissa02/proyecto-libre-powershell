@@ -1,0 +1,320 @@
+function menu {
+	write-host ""
+	write-host "======================== Menú ========================"
+	write-host ""
+	write-host "1. Listar usuarios"
+	write-host "2. Crear usuarios"
+	write-host "3. Eliminar usuarios"
+	write-host "4. Modificar usuarios"
+	write-host ""
+	write-host "5. Listar grupos"
+	write-host "6. Ver miembros de un grupo" 
+	write-host "7. Crear grupo"
+	write-host "8. Eliminar grupo"
+	write-host "9. Crear miembro de un grupo"
+	write-host "10. Eliminar miembro de un grupo"
+	write-host ""
+	write-host "11. Listar todos los servicios" 
+	write-host "12. Obtención de un servicio"
+	write-host "13. Inicio de servicios"
+	write-host "14. Detencion de servicios"
+	write-host "15. Reinicio de servicios"
+	write-host ""
+	write-host "16. Comprobar el estado del Firewall"
+	write-host "17. Habilitar Windows Defender Firewall con seguridad avanzada"
+	write-host "18. Deshabilitar Windows Defender Firewall con seguridad avanzada"
+	write-host "19. Permitir que la aplicación Telnet escuche en la red"
+	write-host ""
+	write-host "20. Salir"
+	write-host ""
+}
+
+menu
+
+function listar_usu {
+	cls
+	write-host ""
+	write-host ""
+	write-host "======> Listado usuarios <======="
+	write-host ""
+	write-host ""
+	Get-LocalUser
+	write-host ""
+}
+
+function crear_usu {
+	cls 
+	write-host ""
+	write-host ""
+	write-host "==========> Creación de usuarios <=========="
+	write-host ""
+	write-host ""
+	$usuario = read-host -prompt "Indica el nombre del usuario "
+	if ($usuario) {
+	New-LocalUser $usuario
+	}
+	else {
+	"No puedes dejar el hueco en blanco"
+	}
+	write-host ""
+}
+
+function eliminar_usu {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Eliminar usuarios <=========="
+	write-host ""
+	write-host ""
+	$eliminar = read-host -prompt "Indica el usuario que desea eliminar "
+	write-host ""
+	Remove-LocalUser $eliminar -Confirm
+	write-host ""	
+}
+
+function modificar_usu {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Modificar usuarios <=========="
+	write-host ""
+	write-host ""
+	$nombreantiguo = read-host -prompt "Indica el nombre del usuario que desea modificar "
+	write-host ""
+	$nombrenuevo = read-host -prompt "Indica el nuevo nombre "
+	write-host ""
+	Rename-LocalUser $nombreantiguo -NewName "$nombrenuevo"
+}
+
+function listar_gru {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Listado grupos <=========="
+	write-host ""
+	write-host ""
+	Get-LocalGroup | fl
+	write-host ""
+}
+
+function ver_miembros {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Ver miembros <=========="
+	write-host ""
+	write-host ""
+	$grupo = read-host -prompt "Indica el grupo al que desea ver sus miembros "
+	write-host ""
+	Get-LocalGroupMember $grupo
+	write-host ""
+}
+
+function crear_gru {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Creación de grupos <=========="
+	write-host ""
+	write-host ""
+	$nombre = read-host -prompt "Introduce el nombre del grupo que desea crear "
+	write-host ""
+	New-LocalGroup $nombre
+	write-host ""
+}
+
+function eliminar_gru {
+	cls 
+	write-host ""
+	write-host ""
+	write-host "==========> Eliminar grupos <=========="
+	write-host ""
+	write-host ""
+	$eliminar = read-host -prompt "Introduce el grupo que desea eliminar "
+	write-host ""
+	Remove-LocalGroup -Confirm $eliminar
+	write-host ""
+}
+
+function crear_miembro {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Creación de miembros <=========="
+	write-host ""
+	write-host ""
+	$usuario = read-host -prompt "Indica el nombre del usuario que quiere meter "
+	write-host ""
+	$grupo = read-host -prompt "Introduce el nombre del grupo "
+	write-host ""
+	Add-LocalGroupMember $grupo -Member $usuario
+	write-host ""
+}
+
+function eliminar_miembro {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Eliminar miembros <=========="
+	write-host ""
+	write-host ""
+	$usuario2 = read-host -prompt "Indica el usuario que desea eliminar "
+	write-host ""
+	$grupo2 = read-host -prompt "Indica el grupo "
+	write-host ""
+	Remove-LocalGroupMember $grupo2 -Member $usuario2
+	write-host "" 
+}
+
+function listar_servicios {
+	cls 
+	write-host ""
+	write-host ""
+	write-host "==========> Listado de servicios <=========="
+	write-host ""
+	write-host ""
+	Get-Service	
+}
+
+
+
+function obtener_servicio {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Obtención de servicios <=========="
+	write-host ""
+	write-host ""
+	$servicio = read-host -prompt "Indica el servicio que desea obtener "
+	write-host ""
+	if ($servicio) {
+	Get-Service -Name $servicio
+	}
+	else {
+	"No puedes dejar el espacio en blanco"
+	}
+}
+
+function inicio_servicio {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Inicio de servicios <=========="
+	write-host ""
+	write-host ""
+	$servicio = read-host -prompt "Indica el servicio que desea iniciar "
+	write-host ""
+	if ($servicio) {
+	Start-Service -Name $servicio
+	}
+	else {
+	"No puedes dejar el espacio en blanco"
+	}
+}
+
+function detener_servicio {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Detención de servicios <=========="
+	write-host ""
+	write-host ""
+	$servicio = read-host -prompt "Indica el servicio que desea detener "
+	write-host ""
+	if ($servicio) {
+	Stop-Service -Name $servicio
+	}
+	else {
+	"No se puede dejar el espacio en blanco"
+	}
+}
+
+function reiniciar_servicio {
+	cls
+	write-host ""
+	write-host ""
+	write-host "==========> Reinicio de servicios <=========="
+	write-host ""
+	write-host ""
+	$servicio = read-host -prompt "Indica el servicio que desea reiniciar"
+	write-host ""
+	if ($servicio) {
+	Restart-Service -Name $servicio
+	}
+	else {
+	"No se puede dejar el espacio en blanco"
+	}
+}
+
+function comprobar_estado {
+	cls
+	write-host ""
+	write-host ""
+	write-host "=====================> Comprobación del estado <======================"
+	write-host ""
+	write-host ""
+	netsh advfirewall show allprofiles state
+	write-host ""
+}
+
+
+function habilitar_firewall {
+	cls
+	write-host ""
+	write-host ""
+	write-host "======================> Habilitar el Firewall <======================="
+	write-host ""
+	write-host ""
+	Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True
+	write-host ""
+	netsh advfirewall show allprofiles state
+}
+
+function deshabilitar_firewall {
+	cls
+	write-host ""
+	write-host ""
+	write-host "=====================> Deshabilitar el Firewall <====================="
+	write-host ""
+	write-host ""
+	Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+	write-host ""
+	netsh advfirewall show allprofiles state
+}
+
+function telnet {
+	cls
+	write-host ""
+	New-NetFirewallRule -DisplayName "Allow Inbound Telnet" -Direction Inbound -Program %SystemRoot%\System32\tlntsvr.exe -RemoteAddress LocalSubnet -Action Allow
+	write-host ""
+}
+
+
+
+
+while (($opcion = Read-Host -prompt "Selecciona una de las opciones") -ne 20){
+	switch ($opcion){
+		1. {listar_usu}
+		2. {crear_usu}
+		3. {eliminar_usu}
+		4. {modificar_usu}
+		5. {listar_gru}
+		6. {ver_miembros}
+		7. {crear_gru}
+		8. {eliminar_gru}
+		9. {crear_miembro}
+		10. {eliminar_miembro}
+		11. {listar_servicios}
+		12. {obtener_servicio}
+		13. {inicio_servicio}
+		14. {detener_servicio}
+		15  {reiniciar_servicio}
+		16. {comprobar_estado}
+		17. {habilitar_firewall}
+		18. {deshabilitar_firewall}
+		19. {telnet}
+		20. {"Exit";}
+	}
+	menu
+
+}
